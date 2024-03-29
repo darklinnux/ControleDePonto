@@ -1,0 +1,13 @@
+backend/.vs/
+backend/.vscode/
+backend/obj/
+backend/bin/
+
+backendTeste/.vs/
+backendTeste/.vscode/
+backendTeste/obj/
+backendTeste/bin/
+.vs/
+*.dll
+*.exe
+

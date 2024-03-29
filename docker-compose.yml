@@ -1,0 +1,26 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "SqlServer2019!"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    restart: always
+
+  nginx:
+    image: nginx:1.16-alpine
+    container_name: nginx
+    working_dir: /application
+    volumes:
+      - "./docker/services/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+    # - ./services/nginx/ssl:/etc/ssl
+      - "./frontend/build:/application"
+    environment:
+      - "TZ=America/Belem"
+    ports:
+      - "8000:80"
+      # - "443:443"
+    restart: always
