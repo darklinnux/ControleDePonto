@@ -1,6 +1,7 @@
 ﻿using backend.Domain.Entities;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using System.Text.Json;
@@ -8,6 +9,7 @@ using System.Text.Json;
 namespace backend.Controllers
 {
     [Route("v1/api/[controller]")]
+    [Authorize]
     [ApiController]
     public class MarkingController : ControllerBase
     {

@@ -13,8 +13,8 @@ using System.Text.Json.Serialization;
 
 namespace backend.Controllers
 {
-    //[Authorize]
     [Route("v1/api/[controller]")]
+    [Authorize]
     [ApiController]
     
     public class EmployeeMarkingController : ControllerBase
@@ -57,8 +57,7 @@ namespace backend.Controllers
 
             try
             {
-                var teste = User;
-                return Ok(await _employeeMarkingService.GetAsync(employee_id, initialdate, finaldate, User.GetProfileId(), User.GetUserId()));
+                return Ok(await _employeeMarkingService.GetAsync(employee_id, initialdate, finaldate, User.GetProfileId(), User.GetEmployeeId()));
             }
             catch (ErrorServiceException e)
             {

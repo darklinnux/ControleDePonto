@@ -12,7 +12,7 @@ namespace backend.Controllers
 {
     [Route("v1/api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
