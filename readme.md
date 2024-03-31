@@ -71,16 +71,16 @@ A experiência foi desafiadora e enriquecedora. Apesar do prazo apertado, aprend
     ```
 
 10. Atualize o banco de dados utilizando o Entity Framework Core:
-   ```
-   dotnet ef database update
-   ```
+    ```
+    dotnet ef database update
+    ```
 
 
 11. Execute a aplicação backend:
     ```
     dotnet run
     ```
-12. Acesse a pagina através do link abaixo.
+12. Acesse a pagina através do link 
     http://localhost:8000/registrar  
 
 Certifique-se de ter as seguintes ferramentas instaladas e configuradas corretamente em seu ambiente de desenvolvimento:
