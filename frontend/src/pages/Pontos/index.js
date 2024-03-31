@@ -59,7 +59,7 @@ export default function Pontos() {
   async function onSubmit() {
     try {
       if (account && account.profile_id === "2") {
-        newMarking.employeeId = account.account_id
+        newMarking.employeeId = account.employee_id
       };
       await req.post('EmployeeMarking', newMarking);
       setNewMarking({});
@@ -71,10 +71,14 @@ export default function Pontos() {
         message: 'Registro adicionado com sucesso!',
       });
     } catch(e) {
-      console.log(e);
+      let erro = '';
+      if(e.response.data.error){
+        erro = `(${e.response.data.error})`
+      }
+      console.log(e.response.data.error);
       feedback.showFeedback({
         severity: 'error',
-        message: 'Não foi possível concluir o cadastro do(a) colaborador(a). Tente novamente mais tarde ou entre em contato com o Administrador.'
+        message: `Não foi possível concluir o registro de ponto ${erro}. Tente novamente mais tarde ou entre em contato com o Administrador.`
       });
     }
   }
@@ -121,7 +125,7 @@ export default function Pontos() {
       }
     }
     loadDefaultData();
-  }, [loading, feedback]);
+  }, []);
 
   useEffect(() => {
     const loadEmployeeMarkings = async () => {
@@ -135,7 +139,7 @@ export default function Pontos() {
               loading.setIsLoading(false);
               return;
             case "2":
-              employeeMarkings = await req.get(`EmployeeMarking/${account.account_id}`);
+              employeeMarkings = await req.get(`EmployeeMarking/${account.employee_id}`);
               setEmployeeMarkings(employeeMarkings.data);
               loading.setIsLoading(false);
               return
@@ -152,7 +156,7 @@ export default function Pontos() {
       }
     }
     loadEmployeeMarkings();
-  }, [sync, account, loading, feedback]);
+  }, [sync, account]);
 
   const onCloseCancelEdit = (_, reason) => {
     if (reason === 'backdropClick' || reason === 'escapeKeyDown') {

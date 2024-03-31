@@ -47,10 +47,10 @@ export default function Relatorio() {
         loading.setIsLoading(false);
       }
     } catch(e) {
-      console.log(e);
+      console.log(e.response.data.error);
       feedback.showFeedback({
         severity: 'error',
-        message: `${e.message}. Falha ao obter os dados do relatório. Tente novamente mais tarde ou entre em contato com o Administrador.`
+        message: `${e.response.data.error ? e.response.data.error : "Falha ao obter os dados do relatório. Tente novamente mais tarde ou entre em contato com o Administrador."}`
       });
     }
   }
@@ -66,7 +66,7 @@ export default function Relatorio() {
     }
     loadEmployees();
     loading.setIsLoading(false);
-  }, [loading]);
+  }, []);
 
   const columns = [
     {

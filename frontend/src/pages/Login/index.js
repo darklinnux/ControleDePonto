@@ -71,7 +71,7 @@ export default function Login() {
         console.log(e.response?.data);
         feedback.showFeedback({
           severity: 'error',
-          message: e.response?.data?.title,
+          message: e.response?.data?.error,
         });
       } else {
         console.log(e);

@@ -152,7 +152,7 @@ export default function Colaboradores() {
 
   // handlers to edit...
   const onClickToEditEmployee = (id) => {
-    const employee = employees[employees.findIndex(employee => employee.Id === id)];
+    const employee = employees[employees.findIndex(employee => employee.id === id)];
     const employeeData = {
       id: employee.id,
       name: employee.name,
@@ -247,7 +247,7 @@ export default function Colaboradores() {
       }
     },
     {
-      name: 'Id',
+      name: 'id',
       label: 'Ações',
       options: { 
         customBodyRender: (param) => { ;
