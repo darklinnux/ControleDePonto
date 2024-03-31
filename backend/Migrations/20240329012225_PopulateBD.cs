@@ -14,8 +14,7 @@ namespace backend.Migrations
         protected override void Up(MigrationBuilder mb)
         {
             using var hmac = new HMACSHA512();
-            byte[] passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("R@m0n123"));
-            byte[] passwordSalt = hmac.Key;
+            
             mb.Sql("INSERT INTO day(Name) VALUES ('Domingo')");
             mb.Sql("INSERT INTO day(Name) VALUES ('Segunda')");
             mb.Sql("INSERT INTO day(Name) VALUES ('Terça')");
@@ -26,15 +25,18 @@ namespace backend.Migrations
 
             //Profile
 
-            mb.Sql("INSERT INTO profile(Name) VALUES ('Admin')");
-            mb.Sql("INSERT INTO profile(Name) VALUES ('User')");
+            mb.Sql("INSERT INTO profile(Name) VALUES ('Administrator')");
+            mb.Sql("INSERT INTO profile(Name) VALUES ('Usuário')");
 
             //Users
 
-            mb.Sql("INSERT INTO [User](Login, ProfileId) VALUES ('admin', 1)");
+            //mb.Sql("INSERT INTO [User](Login, ProfileId) VALUES ('admin', 1)");
 
             //Title
+            mb.Sql("INSERT INTO Title(Name) VALUES ('Assistente')");
             mb.Sql("INSERT INTO Title(Name) VALUES ('Analista')");
+            mb.Sql("INSERT INTO Title(Name) VALUES ('Coordenador')");
+            mb.Sql("INSERT INTO Title(Name) VALUES ('Gerente')");
 
             //Schedule
 
@@ -56,11 +58,11 @@ namespace backend.Migrations
 
             //Employee
 
-            mb.Sql("INSERT INTO employee(Name, Registration, TitleId, UserId, ScheduleId) VALUES ('Pedro Ramon', '25126', 1,1,1)");
+            //mb.Sql("INSERT INTO employee(Name, Registration, TitleId, UserId, ScheduleId) VALUES ('Pedro Ramon', '25126', 1,1,1)");
 
             //MarkingEmployee
 
-            mb.Sql("INSERT INTO employeemarkings(EmployeeId, MarkingId, DateTime) VALUES (1,1,SYSDATETIME())");
+           // mb.Sql("INSERT INTO employeemarkings(EmployeeId, MarkingId, DateTime) VALUES (1,1,SYSDATETIME())");
 
         }
 
