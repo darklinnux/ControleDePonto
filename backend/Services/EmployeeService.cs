@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Reflection.Metadata.Ecma335;
+using AutoMapper;
 using backend.Domain.Entities;
 using backend.DTOs;
 using backend.Exceptions;
@@ -11,21 +12,19 @@ namespace backend.Services
     {
         private readonly IEmployeeRepository _repository;
         private readonly IMapper _mapper;
-        private readonly IAuthenticateService _authenticateService;
         private readonly IUserService _userService;
 
-        public EmployeeService(IEmployeeRepository repository, IMapper mapper, IAuthenticateService authenticateService, IUserService userService)
+        public EmployeeService(IEmployeeRepository repository, IMapper mapper, IUserService userService)
         {
             _repository = repository;
             _mapper = mapper;
-            _authenticateService = authenticateService;
             _userService = userService;
         }
 
         public async Task<Employee> Add(EmployeeDTOCreate employeeDTO)
         {
 
-            if (await _authenticateService.userExistis(employeeDTO.login))
+            if (await _userService.userExistis(employeeDTO.login))
             {
                 throw new ErrorServiceException("Usuário já existe");
             }
@@ -72,11 +71,30 @@ namespace backend.Services
             return employee;
         }
 
+        public async Task<Employee?> GetEmployeByUserAsync(int userId)
+        {
+            var employee = await _repository.GetEmployeeAsync(e => e.UserId == userId)?? 
+                throw new ErrorServiceException("Não foi Possivel encontrar o funcionario do ID de usuário informado");
+            return employee;
+        }
+
         public async Task<Employee> Update(EmployeeDTO employeeDTO)
         {
             await GetAsync(employeeDTO.Id);
             var employeeUpdate = _repository.Update(_mapper.Map<Employee>(employeeDTO));
             return employeeUpdate;
+        }
+
+        public async Task<bool> isEmployeUser(int userId)
+        {
+            var user = await _repository.GetAsync(emp => emp.UserId == userId);
+            if(user is null)
+            {
+                return false;
+            }
+
+            return true;
+            
         }
     }
 }

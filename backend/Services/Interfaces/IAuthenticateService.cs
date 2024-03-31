@@ -6,7 +6,7 @@ namespace backend.Services.Interfaces
     {
         Task<bool> AuthenticateAsync(string login, string password);
         Task<bool> userExistis(string login);
-        string? GenerateToken(int id, string login, int profileId);
+        Task<string?> GenerateToken(int id, string login, int profileId);
         Task<User?> GetUserByLogin(string login);
     }
 }

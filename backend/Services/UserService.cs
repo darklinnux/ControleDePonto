@@ -86,5 +86,17 @@ namespace backend.Services
             _repository.Update(user);
             return _mapper.Map<UserDTO>(user);
         }
+
+        public async Task<bool> userExistis(string login)
+        {
+            var user = await _repository.GetAsync(u => u.Login.ToLower() == login.ToLower());
+            if (user is null)
+            {
+               return false;
+            }
+
+            return true;
+        }
+
     }
 }

@@ -15,7 +15,8 @@ export function useAccount() {
           const accountData = {
             account_id: data.id,
             login: data.login,
-            profile_id: data.profileid
+            profile_id: data.profileid,
+            employee_id: data.employeeid
           }
           setAccount(accountData);
         } else {

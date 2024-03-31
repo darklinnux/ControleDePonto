@@ -2,6 +2,7 @@
 using backend.DTOs;
 using backend.Exceptions;
 using backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -46,7 +47,7 @@ namespace backend.Controllers
                     throw new ErrorServiceException("Ocorreu um erro ao cadastrar o usuário");
                 }
 
-                var token = _authenticateService.GenerateToken(user.Id, user.login, user.ProfileId);
+                var token =  await _authenticateService.GenerateToken(user.Id, user.login, user.ProfileId);
 
 
                 return new UserToken
@@ -64,25 +65,33 @@ namespace backend.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserToken>> Login(UserLogin userLogin)
         {
-            var isExists = await _authenticateService.userExistis(userLogin.Login);
-            if (!isExists)
+            try
             {
-                return Unauthorized("Usuário ou senha incorretos");
+                var isExists = await _authenticateService.userExistis(userLogin.Login);
+                if (!isExists)
+                {
+                    new ErrorServiceException ("Usuário ou senha incorretos");
+                }
+    
+                var result = await _authenticateService.AuthenticateAsync(userLogin.Login, userLogin.Password);
+                if (!result)
+                {
+                    new ErrorServiceException ("Usuário ou senha incorretos");
+                }
+    
+                var user = await _authenticateService.GetUserByLogin(userLogin.Login);
+    
+                var token = await _authenticateService.GenerateToken(user.Id, user.Login, user.ProfileId);
+                return new UserToken
+                {
+                    Token = token
+                };
             }
-
-            var result = await _authenticateService.AuthenticateAsync(userLogin.Login, userLogin.Password);
-            if (!result)
+            catch (ErrorServiceException e)
             {
-                return Unauthorized("Usuário ou senha incorretos");
+                
+                return BadRequest(new {error = e.Message});
             }
-
-            var user = await _authenticateService.GetUserByLogin(userLogin.Login);
-
-            var token = _authenticateService.GenerateToken(user.Id, user.Login, user.ProfileId);
-            return new UserToken
-            {
-                Token = token
-            };
         }
     }
 }

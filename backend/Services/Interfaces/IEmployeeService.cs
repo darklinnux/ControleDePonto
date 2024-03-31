@@ -9,6 +9,8 @@ namespace backend.Services.Interfaces
         Task<Employee> Update(EmployeeDTO employeeDTO);
         Task<Employee> Delete(int id);
         Task<Employee?> GetAsync(int id);
+        Task<Employee?> GetEmployeByUserAsync(int userId);
+        Task<bool> isEmployeUser(int userId);
         Task<IEnumerable<Employee>> GetAllAsync();
     }
 }

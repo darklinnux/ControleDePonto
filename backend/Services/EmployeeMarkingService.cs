@@ -46,7 +46,7 @@ namespace backend.Services
 
         public async Task<EmployeeMarking> Update(EmployeMarkingDTO employeeDTO)
         {
-            await ValidateInsert(employeeDTO);
+            //await ValidateInsert(employeeDTO);
 
             var EmployeMarking = _mapper.Map<EmployeeMarking>(employeeDTO);
             return _repository.Update(EmployeMarking);
@@ -131,22 +131,23 @@ namespace backend.Services
 
         public async Task<IEnumerable<EmployeeMarking?>> GetAsync(int id, DateTime initialDate, DateTime finalDate, int profileId,int userId)
         {
-            int employeeId = id;
-            if (profileId != 1)
-            {
-                employeeId = userId;
-            }
+            int employeeId = (profileId != 1) ? userId : id;
 
             if (initialDate == DateTime.MinValue || finalDate == DateTime.MinValue)
             {
                 return await _repository.GetAllEmployeesMarkingAsync(employee => employee.EmployeeId == employeeId);
             }
 
+            if (finalDate < initialDate)
+            {
+                throw new ErrorServiceException("Verifique se as datas foram informadas corretamente.");
+            }
+
+            DateTime startDate = initialDate.Date;
+            DateTime endDate = finalDate.Date.AddDays(1);
+
             return await _repository.GetAllEmployeesMarkingAsync(
-                em => em.DateTime.Date >= initialDate.Date &&
-                em.DateTime.Date <= finalDate.Date &&
-                em.EmployeeId == employeeId
-                );
+                em => em.DateTime >= startDate && em.DateTime < endDate && em.EmployeeId == employeeId);
         }
     }
 }

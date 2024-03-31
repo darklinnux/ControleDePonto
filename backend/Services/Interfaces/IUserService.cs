@@ -9,6 +9,7 @@ namespace backend.Services.Interfaces
         Task<UserDTO?> Delete(UserDTO userDTO);
         Task<UserDTO?> GetAsync(int id);
         Task<IEnumerable<UserDTO>> GetAllAsync();
+        Task<bool> userExistis(string login);
 
 
     }

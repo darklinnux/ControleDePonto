@@ -15,10 +15,13 @@ namespace backend.Services
         private readonly IConfiguration _configuration;
         private readonly IRepository<User> _repository;
 
-        public AuthenticateService(IConfiguration configuration, IRepository<User> repository)
+        private readonly IEmployeeService _employeeService;
+
+        public AuthenticateService(IConfiguration configuration, IRepository<User> repository, IEmployeeService employeeService)
         {
             _configuration = configuration;
             _repository = repository;
+            _employeeService = employeeService;
         }
 
         public async Task<bool> AuthenticateAsync(string login, string password)
@@ -40,7 +43,7 @@ namespace backend.Services
             return true;
         }
 
-        public string? GenerateToken(int id, string login, int profileId)
+        public async Task<string?> GenerateToken(int id, string login, int profileId)
         {
             var claims = new[]
             {
@@ -49,6 +52,16 @@ namespace backend.Services
                 new Claim("profileid", profileId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
             };
+            
+            if (await _employeeService.isEmployeUser(id))
+            {
+                var employee = await _employeeService.GetEmployeByUserAsync(id);
+
+                var extendedClaims = new Claim[claims.Length + 1];
+                Array.Copy(claims, extendedClaims, claims.Length);
+                extendedClaims[claims.Length] = new Claim("employeeid", employee.Id.ToString());
+                claims = extendedClaims;
+            }
 
             var privateKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:secretKey"]));
             var credentils = new SigningCredentials(privateKey, SecurityAlgorithms.HmacSha256);
