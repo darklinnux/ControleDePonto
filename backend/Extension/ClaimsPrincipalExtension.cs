@@ -21,6 +21,18 @@ namespace backend.Extension
         {
             return int.Parse(user.FindFirst("id").Value);
         }
+
+        public static int GetEmployeeId(this ClaimsPrincipal user)
+        {
+            try
+            {
+                return int.Parse(user.FindFirst("employeeid").Value);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 }
 
