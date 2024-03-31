@@ -12,7 +12,7 @@ namespace backend.Controllers
 {
     [Route("v1/api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class TitleController : ControllerBase
     {
         private readonly IMapper _mapper;
