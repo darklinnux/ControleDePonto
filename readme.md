@@ -80,6 +80,8 @@ A experiência foi desafiadora e enriquecedora. Apesar do prazo apertado, aprend
     ```
     dotnet run
     ```
+12. Acesse a pagina através do link abaixo.
+    http://localhost:8000/registrar  
 
 Certifique-se de ter as seguintes ferramentas instaladas e configuradas corretamente em seu ambiente de desenvolvimento:
 - Git
