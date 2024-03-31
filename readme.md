@@ -65,16 +65,16 @@ A experiência foi desafiadora e enriquecedora. Apesar do prazo apertado, aprend
    ```
    cd backend
    ```
-
-9. Atualize o banco de dados utilizando o Entity Framework Core:
-   ```
-   dotnet database update
-   ```
-
-10. Restaure as dependências do backend:
+9. Restaure as dependências do backend:
     ```
     dotnet restore
     ```
+
+10. Atualize o banco de dados utilizando o Entity Framework Core:
+   ```
+   dotnet ef database update
+   ```
+
 
 11. Execute a aplicação backend:
     ```
